@@ -13,19 +13,26 @@ export class Search extends React.Component {
         searchInput: '',
     }
 
+    searchLength() {
+        return Search.self.state.searchInput.length >= 1
+    }
+
     updateInputValue(evt) {
         Search.self.setState({
             searchInput: evt.target.value
         });
-        if (Search.self.state.searchInput.length >= 1)
+        if (Search.self.searchLength())
             setTimeout(Search.self.updateQuery)
     }
 
+
     componentDidMount() {
-        getAll()
-            .then(books => (
-                Search.self.setState({ books })
-            ))
+        (Search.self.searchLength())
+            ? Search.self.updateQuery()
+            : getAll()
+                .then(books => (
+                    Search.self.setState({ books })
+                ))
     }
 
     updateQuery() {
@@ -55,7 +62,7 @@ export class Search extends React.Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <Books books={Search.self.state.books} />
+                    <Books updateCmp={Search.self.componentDidMount} books={Search.self.state.books} />
                 </div>
             </div>
         )

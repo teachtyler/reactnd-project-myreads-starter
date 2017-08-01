@@ -9,18 +9,16 @@ export class Books extends React.Component {
         Books.self.updateCmp = updateCmp
     }
 
-    updateBooks(shelf, id) {
-        console.log(shelf, id)
-        update(id, shelf)
-            .then(res => (
-                Books.self.updateCmp()
-            )).catch(err => (
-                console.error(err)
-            ))
-    }
-
     changeShelfs(evt) {
-        Books.self.updateBooks(evt.target.value, evt.target.id)
+        const updateBooks = (id, shelf) => {
+            update(id, shelf)
+                .then(res => (
+                    Books.self.updateCmp()
+                )).catch(err => (
+                    console.error(err)
+                ))
+        }
+        updateBooks(evt.target.id, evt.target.value)
     }
 
     render() {
