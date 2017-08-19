@@ -54,11 +54,8 @@ export class Search extends React.Component {
                     return res
                 }).catch(err => console.log)
             }).then(books => {
-                console.log('books: ', books)
                 Search.self.setState({ books })
-            }).catch(err => (
-                console.log(err)
-            ))
+            }).catch(err => console.log)
     }
 
     render() {
