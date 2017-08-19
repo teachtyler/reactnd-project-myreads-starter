@@ -5,6 +5,10 @@ import { search, getAll } from './BooksAPI'
 export class Search extends React.Component {
     constructor() {
         super()
+        /*
+            babel replaces `this` to a higher closure
+            so this hack in the meantime to make it work
+        */
         Search.self = this;
     }
 
@@ -37,9 +41,22 @@ export class Search extends React.Component {
 
     updateQuery() {
         search(Search.self.state.searchInput)
-            .then(books => (
+            .then(res => {
+                return getAll().then(allBooks => {
+                    console.log('res', res)
+                    res.map(book => {
+                        let knownBook = allBooks.find(x => x.id === book.id)
+                        if (knownBook)
+                            book.shelf = knownBook.shelf
+                        else
+                            book.shelf = 'none'
+                    })
+                    return res
+                }).catch(err => console.log)
+            }).then(books => {
+                console.log('books: ', books)
                 Search.self.setState({ books })
-            )).catch(err => (
+            }).catch(err => (
                 console.log(err)
             ))
     }

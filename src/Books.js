@@ -23,6 +23,8 @@ export class Books extends React.Component {
 
     render() {
         const { books } = this.props
+        console.log(books)
+        books.map(book => (book.shelf === undefined) ? book.shelf = 'none' : null)
         return (
             <ol className="books-grid">
                 {books.map(book => (
